@@ -5,16 +5,11 @@ export class Game extends Scene {
     background: Phaser.GameObjects.Image;
     gameText: Phaser.GameObjects.Text;
     occupiedPositions: { x: number, y: number }[];
-    gridX: number;
-    gridY: number;
-    addImageOnClick: boolean;
-    Money: number;
+    
 
     constructor() {
         super('Game');
         this.occupiedPositions = [];
-        this.addImageOnClick = false;
-        this.Money = 100; // Inicializamos la variable Money en 0
     }
 
     create() {
