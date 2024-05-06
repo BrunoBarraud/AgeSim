@@ -1,7 +1,8 @@
+
 import { useRef, useState } from 'react';
 import { IRefPhaserGame, PhaserGame } from '../game/PhaserGame';
 import { MainMenu } from '../game/scenes/MainMenu';
-
+import { Game } from '../game/scenes/Game';
 function App()
 {
     // The sprite can only be moved in the MainMenu Scene
@@ -43,6 +44,10 @@ function App()
         }
 
     }
+    const Menu = () => {
+            
+        
+    }
 
     const addSprite = () => {
 
@@ -52,7 +57,10 @@ function App()
 
             if (scene)
             {
-                // Add more stars
+                //prender una escena 
+                
+                
+                /* // Add more stars
                 const x = Phaser.Math.Between(64, scene.scale.width - 64);
                 const y = Phaser.Math.Between(64, scene.scale.height - 64);
     
@@ -68,7 +76,7 @@ function App()
                     alpha: 0,
                     yoyo: true,
                     repeat: -1
-                });
+                }); */
             }
         }
     }
@@ -84,6 +92,7 @@ function App()
         <div id="app">
             <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
             <div>
+                <button className='button' onClick={Menu}>Shop</button> 
                 <div>
                     <button className="button" onClick={changeScene}>Change Scene</button>
                 </div>

@@ -34,6 +34,8 @@ export class Preloader extends Scene
         this.load.image('edificio', 'personaje.png');
         this.load.image('logo', 'logo.png');
         this.load.image('star', 'star.png');
+        this.load.image('pasto', 'pasto.png');
+        this.load.image('Fabrica', 'inis.png');
     }
 
     create ()
