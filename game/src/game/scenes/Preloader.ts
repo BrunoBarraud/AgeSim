@@ -7,12 +7,6 @@ export class Preloader extends Scene
         super('Preloader');
     }
 
-    init ()
-    {
-       
-    
-    }
-
     preload ()
     {
         //  Load the assets for the game - Replace with your own assets

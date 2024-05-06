@@ -13,9 +13,13 @@ export class Game extends Scene {
     }
 
     create() {
+        this.fondo();
+    }
+    fondo(){
         this.camera = this.cameras.main;
         this.camera.setBackgroundColor(0x00ff00);
-        this.background.setAlpha(0.5);
+        
+
 
         const grid = this.add.grid(512, 384, 1024, 768, 64, 64, 0xffffff);
         grid.setOrigin(0.5);
@@ -28,14 +32,7 @@ export class Game extends Scene {
                 this.add.image(i, j, 'pasto').setAlpha(0.5);
             }
         }
-        
-        
-
-        
-
-       
-
-        
+ 
     }
 
     update() {
