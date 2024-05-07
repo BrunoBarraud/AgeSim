@@ -5,9 +5,7 @@ export class Game extends Scene {
     background: Phaser.GameObjects.Image;
     gameText: Phaser.GameObjects.Text;
     occupiedPositions: { x: number, y: number }[];
-    building: Phaser.GameObjects.Image;
-    startBuilding: any;
-    moveBuilding: any;
+
     
 
     constructor() {
@@ -17,7 +15,6 @@ export class Game extends Scene {
 
     create() {
         this.fondo();
-        this.createInterface();
         
     }
     fondo(){
@@ -40,45 +37,7 @@ export class Game extends Scene {
  
     }
 
-    createInterface(){
-
-        const graphics = this.add.graphics();
-        graphics.fillStyle(0x000000, 0.5);
-        graphics.fillRect(0, 0, 1024, 100);
-        graphics.setDepth(1);
-
-        this.gameText = this.add.text(10, 10, 'Game Scene', { color: 'white', fontSize: '32px' });
-
-        const buildingButton = this.add.text(200, 10, 'Construir', { color: 'white', fontSize: '24px' })
-        .setInteractive()
-        .on('pointerdown', () => {
-            // Aquí deberías mostrar las opciones de edificios
-            this.showBuildingOptions();
-        });
-    }
-
-    showBuildingOptions() {
-        // Aquí deberías mostrar las opciones de edificios
-        const buildingOptions = ['edificio1', 'edificio2', 'edificio3'];
-
-    // Muestra cada opción de edificio en una fila horizontal
-    buildingOptions.forEach((building, index) => {
-        const buildingSprite = this.add.image(100 + index * 150, 50, building)
-            .setInteractive()
-            .on('pointerdown', () => {
-                // Cuando se hace clic en un edificio, llama a la función para comenzar a construirlo
-                this.startBuilding(building);
-            });
-    });
-
-    this.startBuilding(this.building) {
-        this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-            const {x, y} = pointer;
-            // Mueve el edificio a la posición del puntero
-            this.moveBuilding(x, y, this.building);
-
-    }
-
+    
 
 
     update() {
