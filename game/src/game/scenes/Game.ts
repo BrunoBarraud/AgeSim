@@ -6,6 +6,8 @@ export class Game extends Scene {
     gameText: Phaser.GameObjects.Text;
     occupiedPositions: { x: number, y: number }[];
 
+    player: Phaser.Physics.Arcade.Sprite;
+
     
 
     constructor() {
@@ -15,6 +17,37 @@ export class Game extends Scene {
 
     create() {
         this.fondo();
+
+        this.add.image(512, 384, 'dude');
+
+
+        //sprites 
+        this.anims.create({ 
+            key: 'idle', 
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }), 
+            frameRate: 10, 
+            repeat: -1 
+        });
+
+        this.anims.create({ 
+            key: 'walk', 
+            frames: this.anims.generateFrameNumbers('dude', { start: 4, end: 7 }), 
+            frameRate: 10, 
+            repeat: -1 
+        });
+
+        this.anims.create({ 
+            key: 'run', 
+            frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 11 }), 
+            frameRate: 10, 
+            repeat: -1 
+        });
+
+
+
+
+        //Input de teclado 
+        this.cursors = this.input.keyboard.createCursorKeys(); 
         
     }
     fondo(){
@@ -42,5 +75,18 @@ export class Game extends Scene {
 
     update() {
         
+        if(this.cursors.left.isDown){
+            this.camera.scrollX -= 4;
+        }
+        if(this.cursors.right.isDown){
+            this.camera.scrollX += 4;
+        }
+        if(this.cursors.up.isDown){
+            this.camera.scrollY -= 4;
+        }
+        if(this.cursors.down.isDown){
+            this.camera.scrollY += 4;
+        }
+
     }
 }
