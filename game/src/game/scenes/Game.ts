@@ -5,49 +5,24 @@ export class Game extends Scene {
     background: Phaser.GameObjects.Image;
     gameText: Phaser.GameObjects.Text;
     occupiedPositions: { x: number, y: number }[];
-
-    player: Phaser.Physics.Arcade.Sprite;
-
-    
+    player: any;
+    cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 
     constructor() {
         super('Game');
         this.occupiedPositions = [];
     }
 
+    preload(){
+        this.load.image('pasto', 'assets/pasto.png');
+        this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    }
+
     create() {
         this.fondo();
-
-        this.add.image(512, 384, 'dude');
-
-
-        //sprites 
-        this.anims.create({ 
-            key: 'idle', 
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }), 
-            frameRate: 10, 
-            repeat: -1 
-        });
-
-        this.anims.create({ 
-            key: 'walk', 
-            frames: this.anims.generateFrameNumbers('dude', { start: 4, end: 7 }), 
-            frameRate: 10, 
-            repeat: -1 
-        });
-
-        this.anims.create({ 
-            key: 'run', 
-            frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 11 }), 
-            frameRate: 10, 
-            repeat: -1 
-        });
-
-
-
-
-        //Input de teclado 
-        this.cursors = this.input.keyboard.createCursorKeys(); 
+        this.constPlayer();
+        this.cursors = this.input.keyboard.createCursorKeys();
+        
         
     }
     fondo(){
@@ -70,22 +45,56 @@ export class Game extends Scene {
  
     }
 
+    constPlayer(){
+        this.player = this.physics.add.sprite(100, 450, 'dude');
+
+        this.player.setBounce(0.2);
+        this.player.setCollideWorldBounds(true);
+
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'dude', frame: 4 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+            frameRate: 10,
+            repeat: -1
+        });
+
+
+
+
+
+    }
+
     
 
 
     update() {
         
-        if(this.cursors.left.isDown){
-            this.camera.scrollX -= 4;
+        if (this.cursors && this.cursors.left?.isDown) {
+            this.player.setVelocityX(-160);
+            this.player.anims.play('left', true);
+        } else if (this.cursors && this.cursors.right?.isDown) {
+            this.player.setVelocityX(160);
+            this.player.anims.play('right', true);
+        } else {
+            this.player.setVelocityX(0);
+            this.player.anims.play('turn');
         }
-        if(this.cursors.right.isDown){
-            this.camera.scrollX += 4;
-        }
-        if(this.cursors.up.isDown){
-            this.camera.scrollY -= 4;
-        }
-        if(this.cursors.down.isDown){
-            this.camera.scrollY += 4;
+        
+        if (this.cursors && this.cursors.up?.isDown && this.player.body.touching.down) {
+            this.player.setVelocityY(-330);
         }
 
     }
