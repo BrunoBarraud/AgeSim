@@ -6,9 +6,8 @@ export class Game extends Scene {
     gameText: Phaser.GameObjects.Text;
     occupiedPositions: { x: number, y: number }[];
     maderaText: Phaser.GameObjects.Text; // Texto para mostrar la cantidad de madera
-
-    // Variable para almacenar la cantidad de madera
-    maderaCount: number = 0;
+    maderaCount: number = 100; // Inicializar madera en 100
+    botonRestarMadera: Phaser.GameObjects.Text; // Botón para restar madera
 
     constructor() {
         super('Game');
@@ -19,8 +18,26 @@ export class Game extends Scene {
         this.fondo();
 
         // Crear el texto para mostrar la cantidad de madera
-        this.maderaText = this.add.text(this.sys.canvas.width - 50, 25, 'Madera: 0', { fontFamily: 'Arial', fontSize: '24px', color: '#ffffff' });
+        this.maderaText = this.add.text(this.sys.canvas.width - 200, 50, 'Madera: 100', { fontFamily: 'Arial', fontSize: '24px', color: '#ffffff' });
         this.maderaText.setOrigin(1, 0);
+
+        // Crear el botón para restar madera
+        this.botonRestarMadera = this.add.text(this.sys.canvas.width - 200, 100, '-5 Madera', { 
+            fontFamily: 'Arial', 
+            fontSize: '24px', 
+            color: '#000000', // Color del texto
+            backgroundColor: '#ffffff', // Fondo blanco
+            padding: { x: 10, y: 5 }, // Espaciado interno del botón
+            stroke: '#000000', // Borde negro
+            strokeThickness: 2 // Grosor del borde
+        });
+        this.botonRestarMadera.setOrigin(1, 0);
+        this.botonRestarMadera.setInteractive(); // Hacer que el botón sea interactivo
+
+        // Agregar evento al botón para restar madera
+        this.botonRestarMadera.on('pointerdown', () => {
+            this.mostrarPestanaConfirmacion();
+        });
     }
 
     fondo(){
@@ -43,5 +60,49 @@ export class Game extends Scene {
     update() {
         // Actualizar el texto de la cantidad de madera
         this.maderaText.setText(`Madera: ${this.maderaCount}`);
+    }
+
+    // Función para restar madera
+    restarMadera(cantidad: number) {
+        if (this.maderaCount >= cantidad) {
+            this.maderaCount -= cantidad;
+        } else {
+            // Si la cantidad de madera no es suficiente, mostrar un mensaje de saldo insuficiente
+            this.mostrarMensaje('Saldo insuficiente');
+        }
+    }
+
+    // Función para mostrar un mensaje temporal en la pantalla
+    mostrarMensaje(mensaje: string) {
+        const mensajeText = this.add.text(this.sys.canvas.width / 2, this.sys.canvas.height / 2, mensaje, { fontFamily: 'Arial', fontSize: '36px', color: '#ffffff' });
+        mensajeText.setOrigin(0.5);
+        this.time.delayedCall(2000, () => {
+            mensajeText.destroy();
+        });
+    }
+
+    // Función para mostrar la pestaña de confirmación
+    mostrarPestanaConfirmacion() {
+        const confirmacionText = this.add.text(this.sys.canvas.width / 2, this.sys.canvas.height / 2 - 50, '¿Estás seguro de restar 5 de madera?', { fontFamily: 'Arial', fontSize: '24px', color: '#ffffff' });
+        confirmacionText.setOrigin(0.5);
+
+        const botonSi = this.add.text(this.sys.canvas.width / 2 - 50, this.sys.canvas.height / 2 + 50, 'Sí', { fontFamily: 'Arial', fontSize: '24px', color: '#ffffff' });
+        botonSi.setOrigin(0.5);
+        botonSi.setInteractive();
+        botonSi.on('pointerdown', () => {
+            this.restarMadera(5);
+            confirmacionText.destroy();
+            botonSi.destroy();
+            botonNo.destroy();
+        });
+
+        const botonNo = this.add.text(this.sys.canvas.width / 2 + 50, this.sys.canvas.height / 2 + 50, 'No', { fontFamily: 'Arial', fontSize: '24px', color: '#ffffff' });
+        botonNo.setOrigin(0.5);
+        botonNo.setInteractive();
+        botonNo.on('pointerdown', () => {
+            confirmacionText.destroy();
+            botonSi.destroy();
+            botonNo.destroy();
+        });
     }
 }
